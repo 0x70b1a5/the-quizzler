@@ -3,6 +3,7 @@ import { ColorScheme, StartScreenPrompt, ThemeOption } from "@openai/chatkit";
 // Custom backend URL (FastAPI server)
 export const CHATKIT_API_URL =
   process.env.NEXT_PUBLIC_CHATKIT_API_URL?.trim() || "http://127.0.0.1:8000/chatkit";
+export const WORKFLOW_ID = process.env.NEXT_PUBLIC_WORKFLOW_ID?.trim() || "workflow_id_local_dev";
 
 // Domain key for ChatKit (can be any non-empty string for local dev)
 export const CHATKIT_API_DOMAIN_KEY =
