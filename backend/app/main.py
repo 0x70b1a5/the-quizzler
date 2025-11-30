@@ -21,7 +21,7 @@ app = FastAPI(title="Quiz Taker API")
 # CORS for local development
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000", "http://127.0.0.1:3000"],
+    allow_origins=["http://localhost:5180", "http://127.0.0.1:5180","https://quiz.theologi.ca"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

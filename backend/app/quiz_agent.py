@@ -36,6 +36,7 @@ class QuizQuestion(BaseModel):
     options: list[QuizOption] = Field(description="The answer options")
     correctValue: str = Field(description="The value of the correct option")
     hint: str = Field(description="Hint shown when the answer is wrong")
+    explanation: str = Field(description="Explanation shown when the answer is correct, explaining why it's right")
 
 
 class QuizAgentContext(AgentContext):
@@ -78,6 +79,7 @@ async def show_quiz(
             ],
             "correctValue": q.correctValue,
             "hint": q.hint,
+            "explanation": q.explanation,
             "userAnswer": "",
             "isCorrect": False,
         }
@@ -140,7 +142,10 @@ Each question object must have:
 - prompt: The question text  
 - options: Array of {label: "Answer text", value: "answer_key"}
 - correctValue: Must exactly match one option's value
-- hint: Explanation for wrong answers
+- hint: Helpful hint shown when the answer is WRONG
+- explanation: Educational commentary shown when the answer is CORRECT, explaining WHY it's right
+
+Make explanations educational and insightful - help the student understand the reasoning!
 
 ALWAYS call show_quiz. NEVER list questions as text.""",
     tools=[show_quiz],

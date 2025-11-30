@@ -1,7 +1,7 @@
 {
   "version": "1.0",
   "name": "Quiz Taker",
-  "template": "{\"type\":\"Card\",\"size\":\"md\",\"children\":[{\"type\":\"Col\",\"gap\":2,\"children\":[{\"type\":\"Row\",\"children\":[{%- set _c -%},{\"type\":\"Title\",\"value\":{{ (title) | tojson }},\"size\":\"sm\"},{\"type\":\"Spacer\"}{%-if submitted -%},{\"type\":\"Badge\",\"label\":{{ (score) | tojson }},\"color\":\"success\"}{%-else-%}{%-endif-%}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]},{\"type\":\"Divider\"},{\"type\":\"Form\",\"onSubmitAction\":{\"type\":\"quiz.submit\"},\"children\":[{\"type\":\"Col\",\"gap\":3,\"children\":[{%- set _c -%}{%-for q in questions -%}{%-set idx = loop.index0 -%},{\"type\":\"Col\",\"key\":{{ (q.id) | tojson }},\"gap\":2,\"children\":[{%- set _c -%},{\"type\":\"Row\",\"children\":[{%- set _c -%},{\"type\":\"Badge\",\"label\":{{ ((\"Q\" ~ (idx + 1))) | tojson }},\"color\":\"info\"},{\"type\":\"Text\",\"value\":{{ (q.prompt) | tojson }},\"size\":\"sm\",\"weight\":\"semibold\"},{\"type\":\"Spacer\"}{%-if (submitted and q.isCorrect) -%},{\"type\":\"Icon\",\"name\":\"check-circle-filled\",\"color\":\"success\"}{%-else-%}{%-endif-%}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]},{\"type\":\"RadioGroup\",\"name\":{{ ((\"answers.\" ~ q.id)) | tojson }},\"options\":{{ (q.options) | tojson }},\"defaultValue\":{{ (q.userAnswer) | tojson }},\"disabled\":{{ (submitted) | tojson }},\"direction\":\"col\",\"required\":true}{%-if (submitted and (not q.isCorrect)) -%},{\"type\":\"Row\",\"align\":\"start\",\"gap\":2,\"children\":[{\"type\":\"Box\",\"background\":\"surface-secondary\",\"radius\":\"sm\",\"padding\":2,\"children\":[{\"type\":\"Row\",\"gap\":2,\"children\":[{\"type\":\"Icon\",\"name\":\"info\",\"color\":\"warning\"},{\"type\":\"Text\",\"value\":{{ (q.hint) | tojson }},\"size\":\"sm\",\"color\":\"secondary\"}]}]}]}{%-else-%}{%-endif-%},{\"type\":\"Divider\"}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]}{%-endfor-%}{%-if not (submitted) -%},{\"type\":\"Button\",\"submit\":true,\"label\":\"Submit answers\",\"style\":\"primary\",\"block\":true,\"iconStart\":\"check\"}{%-else-%},{\"type\":\"Button\",\"label\":\"Retake quiz\",\"variant\":\"outline\",\"block\":true,\"onClickAction\":{\"type\":\"quiz.reset\"}}{%-endif-%}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]}]}]}]}",
+  "template": "{\"type\":\"Card\",\"size\":\"md\",\"children\":[{\"type\":\"Col\",\"gap\":2,\"children\":[{\"type\":\"Row\",\"children\":[{%- set _c -%},{\"type\":\"Title\",\"value\":{{ (title) | tojson }},\"size\":\"sm\"},{\"type\":\"Spacer\"}{%-if submitted -%},{\"type\":\"Badge\",\"label\":{{ (score) | tojson }},\"color\":\"success\"}{%-else-%}{%-endif-%}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]},{\"type\":\"Divider\"},{\"type\":\"Form\",\"onSubmitAction\":{\"type\":\"quiz.submit\"},\"children\":[{\"type\":\"Col\",\"gap\":3,\"children\":[{%- set _c -%}{%-for q in questions -%}{%-set idx = loop.index0 -%},{\"type\":\"Col\",\"key\":{{ (q.id) | tojson }},\"gap\":2,\"children\":[{%- set _c -%},{\"type\":\"Row\",\"children\":[{%- set _c -%},{\"type\":\"Badge\",\"label\":{{ ((\"Q\" ~ (idx + 1))) | tojson }},\"color\":\"info\"},{\"type\":\"Text\",\"value\":{{ (q.prompt) | tojson }},\"size\":\"sm\",\"weight\":\"semibold\"},{\"type\":\"Spacer\"}{%-if (submitted and q.isCorrect) -%},{\"type\":\"Icon\",\"name\":\"check-circle-filled\",\"color\":\"success\"}{%-else-%}{%-endif-%}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]},{\"type\":\"RadioGroup\",\"name\":{{ ((\"answers.\" ~ q.id)) | tojson }},\"options\":{{ (q.options) | tojson }},\"defaultValue\":{{ (q.userAnswer) | tojson }},\"disabled\":{{ (submitted) | tojson }},\"direction\":\"col\",\"required\":true}{%-if (submitted and (not q.isCorrect)) -%},{\"type\":\"Row\",\"align\":\"start\",\"gap\":2,\"children\":[{\"type\":\"Box\",\"background\":\"surface-secondary\",\"radius\":\"sm\",\"padding\":2,\"children\":[{\"type\":\"Row\",\"gap\":2,\"children\":[{\"type\":\"Icon\",\"name\":\"info\",\"color\":\"warning\"},{\"type\":\"Text\",\"value\":{{ (q.hint) | tojson }},\"size\":\"sm\",\"color\":\"secondary\"}]}]}]}{%-else-%}{%-endif-%}{%-if (submitted and q.isCorrect) -%},{\"type\":\"Row\",\"align\":\"start\",\"gap\":2,\"children\":[{\"type\":\"Box\",\"background\":\"surface-secondary\",\"radius\":\"sm\",\"padding\":2,\"children\":[{\"type\":\"Row\",\"gap\":2,\"children\":[{\"type\":\"Icon\",\"name\":\"sparkle\",\"color\":\"success\"},{\"type\":\"Text\",\"value\":{{ (q.explanation) | tojson }},\"size\":\"sm\",\"color\":\"secondary\"}]}]}]}{%-else-%}{%-endif-%},{\"type\":\"Divider\"}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]}{%-endfor-%}{%-if not (submitted) -%},{\"type\":\"Button\",\"submit\":true,\"label\":\"Submit answers\",\"style\":\"primary\",\"block\":true,\"iconStart\":\"check\"}{%-else-%},{\"type\":\"Button\",\"label\":\"Retake quiz\",\"variant\":\"outline\",\"block\":true,\"onClickAction\":{\"type\":\"quiz.reset\"}}{%-endif-%}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]}]}]}]}",
   "jsonSchema": {
     "$schema": "https://json-schema.org/draft/2020-12/schema",
     "type": "object",
@@ -54,6 +54,9 @@
             "hint": {
               "type": "string"
             },
+            "explanation": {
+              "type": "string"
+            },
             "userAnswer": {
               "type": "string"
             },
@@ -66,7 +69,8 @@
             "prompt",
             "options",
             "correctValue",
-            "hint"
+            "hint",
+            "explanation"
           ],
           "additionalProperties": false
         }
