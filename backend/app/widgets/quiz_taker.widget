@@ -1,0 +1,283 @@
+{
+  "version": "1.0",
+  "name": "Quiz Taker",
+  "template": "{\"type\":\"Card\",\"size\":\"md\",\"children\":[{\"type\":\"Col\",\"gap\":2,\"children\":[{\"type\":\"Row\",\"children\":[{%- set _c -%},{\"type\":\"Title\",\"value\":{{ (title) | tojson }},\"size\":\"sm\"},{\"type\":\"Spacer\"}{%-if submitted -%},{\"type\":\"Badge\",\"label\":{{ (score) | tojson }},\"color\":\"success\"}{%-else-%}{%-endif-%}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]},{\"type\":\"Divider\"},{\"type\":\"Form\",\"onSubmitAction\":{\"type\":\"quiz.submit\"},\"children\":[{\"type\":\"Col\",\"gap\":3,\"children\":[{%- set _c -%}{%-for q in questions -%}{%-set idx = loop.index0 -%},{\"type\":\"Col\",\"key\":{{ (q.id) | tojson }},\"gap\":2,\"children\":[{%- set _c -%},{\"type\":\"Row\",\"children\":[{%- set _c -%},{\"type\":\"Badge\",\"label\":{{ ((\"Q\" ~ (idx + 1))) | tojson }},\"color\":\"info\"},{\"type\":\"Text\",\"value\":{{ (q.prompt) | tojson }},\"size\":\"sm\",\"weight\":\"semibold\"},{\"type\":\"Spacer\"}{%-if (submitted and q.isCorrect) -%},{\"type\":\"Icon\",\"name\":\"check-circle-filled\",\"color\":\"success\"}{%-else-%}{%-endif-%}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]},{\"type\":\"RadioGroup\",\"name\":{{ ((\"answers.\" ~ q.id)) | tojson }},\"options\":{{ (q.options) | tojson }},\"defaultValue\":{{ (q.userAnswer) | tojson }},\"disabled\":{{ (submitted) | tojson }},\"direction\":\"col\",\"required\":true}{%-if (submitted and (not q.isCorrect)) -%},{\"type\":\"Row\",\"align\":\"start\",\"gap\":2,\"children\":[{\"type\":\"Box\",\"background\":\"surface-secondary\",\"radius\":\"sm\",\"padding\":2,\"children\":[{\"type\":\"Row\",\"gap\":2,\"children\":[{\"type\":\"Icon\",\"name\":\"info\",\"color\":\"warning\"},{\"type\":\"Text\",\"value\":{{ (q.hint) | tojson }},\"size\":\"sm\",\"color\":\"secondary\"}]}]}]}{%-else-%}{%-endif-%},{\"type\":\"Divider\"}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]}{%-endfor-%}{%-if not (submitted) -%},{\"type\":\"Button\",\"submit\":true,\"label\":\"Submit answers\",\"style\":\"primary\",\"block\":true,\"iconStart\":\"check\"}{%-else-%},{\"type\":\"Button\",\"label\":\"Retake quiz\",\"variant\":\"outline\",\"block\":true,\"onClickAction\":{\"type\":\"quiz.reset\"}}{%-endif-%}{%- endset -%}{{- (_c[1:] if _c and _c[0] == ',' else _c) -}}]}]}]}]}",
+  "jsonSchema": {
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "type": "object",
+    "properties": {
+      "title": {
+        "type": "string"
+      },
+      "submitted": {
+        "type": "boolean"
+      },
+      "score": {
+        "type": "string"
+      },
+      "questions": {
+        "type": "array",
+        "items": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string"
+            },
+            "prompt": {
+              "type": "string"
+            },
+            "options": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "properties": {
+                  "label": {
+                    "type": "string"
+                  },
+                  "value": {
+                    "type": "string"
+                  },
+                  "disabled": {
+                    "type": "boolean"
+                  }
+                },
+                "required": [
+                  "label",
+                  "value"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "correctValue": {
+              "type": "string"
+            },
+            "hint": {
+              "type": "string"
+            },
+            "userAnswer": {
+              "type": "string"
+            },
+            "isCorrect": {
+              "type": "boolean"
+            }
+          },
+          "required": [
+            "id",
+            "prompt",
+            "options",
+            "correctValue",
+            "hint"
+          ],
+          "additionalProperties": false
+        }
+      }
+    },
+    "required": [
+      "title",
+      "submitted",
+      "questions"
+    ],
+    "additionalProperties": false
+  },
+  "outputJsonPreview": {
+    "type": "Card",
+    "size": "md",
+    "children": [
+      {
+        "type": "Col",
+        "gap": 2,
+        "children": [
+          {
+            "type": "Row",
+            "children": [
+              {
+                "type": "Title",
+                "value": "Multiple-choice quiz",
+                "size": "sm"
+              },
+              {
+                "type": "Spacer"
+              }
+            ]
+          },
+          {
+            "type": "Divider"
+          },
+          {
+            "type": "Form",
+            "onSubmitAction": {
+              "type": "quiz.submit"
+            },
+            "children": [
+              {
+                "type": "Col",
+                "gap": 3,
+                "children": [
+                  {
+                    "type": "Col",
+                    "key": "q1",
+                    "gap": 2,
+                    "children": [
+                      {
+                        "type": "Row",
+                        "children": [
+                          {
+                            "type": "Badge",
+                            "label": "Q1",
+                            "color": "info"
+                          },
+                          {
+                            "type": "Text",
+                            "value": "What is the capital of France?",
+                            "size": "sm",
+                            "weight": "semibold"
+                          },
+                          {
+                            "type": "Spacer"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "RadioGroup",
+                        "name": "answers.q1",
+                        "options": [
+                          {
+                            "label": "Paris",
+                            "value": "paris"
+                          },
+                          {
+                            "label": "Berlin",
+                            "value": "berlin"
+                          },
+                          {
+                            "label": "Madrid",
+                            "value": "madrid"
+                          }
+                        ],
+                        "disabled": false,
+                        "direction": "col",
+                        "required": true
+                      },
+                      {
+                        "type": "Divider"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Col",
+                    "key": "q2",
+                    "gap": 2,
+                    "children": [
+                      {
+                        "type": "Row",
+                        "children": [
+                          {
+                            "type": "Badge",
+                            "label": "Q2",
+                            "color": "info"
+                          },
+                          {
+                            "type": "Text",
+                            "value": "2 + 2 = ?",
+                            "size": "sm",
+                            "weight": "semibold"
+                          },
+                          {
+                            "type": "Spacer"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "RadioGroup",
+                        "name": "answers.q2",
+                        "options": [
+                          {
+                            "label": "3",
+                            "value": "3"
+                          },
+                          {
+                            "label": "4",
+                            "value": "4"
+                          },
+                          {
+                            "label": "5",
+                            "value": "5"
+                          }
+                        ],
+                        "disabled": false,
+                        "direction": "col",
+                        "required": true
+                      },
+                      {
+                        "type": "Divider"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Col",
+                    "key": "q3",
+                    "gap": 2,
+                    "children": [
+                      {
+                        "type": "Row",
+                        "children": [
+                          {
+                            "type": "Badge",
+                            "label": "Q3",
+                            "color": "info"
+                          },
+                          {
+                            "type": "Text",
+                            "value": "Which planet is known as the Red Planet?",
+                            "size": "sm",
+                            "weight": "semibold"
+                          },
+                          {
+                            "type": "Spacer"
+                          }
+                        ]
+                      },
+                      {
+                        "type": "RadioGroup",
+                        "name": "answers.q3",
+                        "options": [
+                          {
+                            "label": "Mars",
+                            "value": "mars"
+                          },
+                          {
+                            "label": "Venus",
+                            "value": "venus"
+                          },
+                          {
+                            "label": "Jupiter",
+                            "value": "jupiter"
+                          }
+                        ],
+                        "disabled": false,
+                        "direction": "col",
+                        "required": true
+                      },
+                      {
+                        "type": "Divider"
+                      }
+                    ]
+                  },
+                  {
+                    "type": "Button",
+                    "submit": true,
+                    "label": "Submit answers",
+                    "style": "primary",
+                    "block": true,
+                    "iconStart": "check"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "encodedWidget": "eyJpZCI6ImQ5MjY1OWUyLTNkMGUtNDI5ZC1iNmU0LTM4MWYxYTI1OGYyOCIsIm5hbWUiOiJRdWl6IFRha2VyIiwidmlldyI6IjxDYXJkIHNpemU9XCJtZFwiPlxuICA8Q29sIGdhcD17Mn0-XG4gICAgPFJvdz5cbiAgICAgIDxUaXRsZSB2YWx1ZT17dGl0bGV9IHNpemU9XCJzbVwiIC8-XG4gICAgICA8U3BhY2VyIC8-XG4gICAgICB7c3VibWl0dGVkID8gPEJhZGdlIGxhYmVsPXtzY29yZX0gY29sb3I9XCJzdWNjZXNzXCIgLz4gOiBudWxsfVxuICAgIDwvUm93PlxuICAgIDxEaXZpZGVyIC8-XG5cbiAgICA8Rm9ybSBvblN1Ym1pdEFjdGlvbj17eyB0eXBlOiBcInF1aXouc3VibWl0XCIgfX0-XG4gICAgICA8Q29sIGdhcD17M30-XG4gICAgICAgIHtxdWVzdGlvbnMubWFwKChxLCBpZHgpID0-IChcbiAgICAgICAgICA8Q29sIGtleT17cS5pZH0gZ2FwPXsyfT5cbiAgICAgICAgICAgIDxSb3c-XG4gICAgICAgICAgICAgIDxCYWRnZSBsYWJlbD17YFEke2lkeCArIDF9YH0gY29sb3I9XCJpbmZvXCIgLz5cbiAgICAgICAgICAgICAgPFRleHQgdmFsdWU9e3EucHJvbXB0fSBzaXplPVwic21cIiB3ZWlnaHQ9XCJzZW1pYm9sZFwiIC8-XG4gICAgICAgICAgICAgIDxTcGFjZXIgLz5cbiAgICAgICAgICAgICAge3N1Ym1pdHRlZCAmJiBxLmlzQ29ycmVjdCA_IChcbiAgICAgICAgICAgICAgICA8SWNvbiBuYW1lPVwiY2hlY2stY2lyY2xlLWZpbGxlZFwiIGNvbG9yPVwic3VjY2Vzc1wiIC8-XG4gICAgICAgICAgICAgICkgOiBudWxsfVxuICAgICAgICAgICAgPC9Sb3c-XG5cbiAgICAgICAgICAgIDxSYWRpb0dyb3VwXG4gICAgICAgICAgICAgIG5hbWU9e2BhbnN3ZXJzLiR7cS5pZH1gfVxuICAgICAgICAgICAgICBvcHRpb25zPXtxLm9wdGlvbnN9XG4gICAgICAgICAgICAgIGRlZmF1bHRWYWx1ZT17cS51c2VyQW5zd2VyfVxuICAgICAgICAgICAgICBkaXNhYmxlZD17c3VibWl0dGVkfVxuICAgICAgICAgICAgICBkaXJlY3Rpb249XCJjb2xcIlxuICAgICAgICAgICAgICByZXF1aXJlZFxuICAgICAgICAgICAgLz5cblxuICAgICAgICAgICAge3N1Ym1pdHRlZCAmJiAhcS5pc0NvcnJlY3QgPyAoXG4gICAgICAgICAgICAgIDxSb3cgYWxpZ249XCJzdGFydFwiIGdhcD17Mn0-XG4gICAgICAgICAgICAgICAgPEJveCBiYWNrZ3JvdW5kPVwic3VyZmFjZS1zZWNvbmRhcnlcIiByYWRpdXM9XCJzbVwiIHBhZGRpbmc9ezJ9PlxuICAgICAgICAgICAgICAgICAgPFJvdyBnYXA9ezJ9PlxuICAgICAgICAgICAgICAgICAgICA8SWNvbiBuYW1lPVwiaW5mb1wiIGNvbG9yPVwid2FybmluZ1wiIC8-XG4gICAgICAgICAgICAgICAgICAgIDxUZXh0IHZhbHVlPXtxLmhpbnR9IHNpemU9XCJzbVwiIGNvbG9yPVwic2Vjb25kYXJ5XCIgLz5cbiAgICAgICAgICAgICAgICAgIDwvUm93PlxuICAgICAgICAgICAgICAgIDwvQm94PlxuICAgICAgICAgICAgICA8L1Jvdz5cbiAgICAgICAgICAgICkgOiBudWxsfVxuXG4gICAgICAgICAgICA8RGl2aWRlciAvPlxuICAgICAgICAgIDwvQ29sPlxuICAgICAgICApKX1cblxuICAgICAgICB7IXN1Ym1pdHRlZCA_IChcbiAgICAgICAgICA8QnV0dG9uXG4gICAgICAgICAgICBzdWJtaXRcbiAgICAgICAgICAgIGxhYmVsPVwiU3VibWl0IGFuc3dlcnNcIlxuICAgICAgICAgICAgc3R5bGU9XCJwcmltYXJ5XCJcbiAgICAgICAgICAgIGJsb2NrXG4gICAgICAgICAgICBpY29uU3RhcnQ9XCJjaGVja1wiXG4gICAgICAgICAgLz5cbiAgICAgICAgKSA6IChcbiAgICAgICAgICA8QnV0dG9uXG4gICAgICAgICAgICBsYWJlbD1cIlJldGFrZSBxdWl6XCJcbiAgICAgICAgICAgIHZhcmlhbnQ9XCJvdXRsaW5lXCJcbiAgICAgICAgICAgIGJsb2NrXG4gICAgICAgICAgICBvbkNsaWNrQWN0aW9uPXt7IHR5cGU6IFwicXVpei5yZXNldFwiIH19XG4gICAgICAgICAgLz5cbiAgICAgICAgKX1cbiAgICAgIDwvQ29sPlxuICAgIDwvRm9ybT5cbiAgPC9Db2w-XG48L0NhcmQ-IiwiZGVmYXVsdFN0YXRlIjp7InRpdGxlIjoiTXVsdGlwbGUtY2hvaWNlIHF1aXoiLCJzdWJtaXR0ZWQiOmZhbHNlLCJxdWVzdGlvbnMiOlt7ImlkIjoicTEiLCJwcm9tcHQiOiJXaGF0IGlzIHRoZSBjYXBpdGFsIG9mIEZyYW5jZT8iLCJvcHRpb25zIjpbeyJsYWJlbCI6IlBhcmlzIiwidmFsdWUiOiJwYXJpcyJ9LHsibGFiZWwiOiJCZXJsaW4iLCJ2YWx1ZSI6ImJlcmxpbiJ9LHsibGFiZWwiOiJNYWRyaWQiLCJ2YWx1ZSI6Im1hZHJpZCJ9XSwiY29ycmVjdFZhbHVlIjoicGFyaXMiLCJoaW50IjoiSXQncyBuaWNrbmFtZWQgdGhlIENpdHkgb2YgTGlnaHQuIn0seyJpZCI6InEyIiwicHJvbXB0IjoiMiArIDIgPSA_Iiwib3B0aW9ucyI6W3sibGFiZWwiOiIzIiwidmFsdWUiOiIzIn0seyJsYWJlbCI6IjQiLCJ2YWx1ZSI6IjQifSx7ImxhYmVsIjoiNSIsInZhbHVlIjoiNSJ9XSwiY29ycmVjdFZhbHVlIjoiNCIsImhpbnQiOiJUaGluayBldmVuIG51bWJlcnMuIn0seyJpZCI6InEzIiwicHJvbXB0IjoiV2hpY2ggcGxhbmV0IGlzIGtub3duIGFzIHRoZSBSZWQgUGxhbmV0PyIsIm9wdGlvbnMiOlt7ImxhYmVsIjoiTWFycyIsInZhbHVlIjoibWFycyJ9LHsibGFiZWwiOiJWZW51cyIsInZhbHVlIjoidmVudXMifSx7ImxhYmVsIjoiSnVwaXRlciIsInZhbHVlIjoianVwaXRlciJ9XSwiY29ycmVjdFZhbHVlIjoibWFycyIsImhpbnQiOiJOYW1lZCBhZnRlciB0aGUgUm9tYW4gZ29kIG9mIHdhci4ifV19LCJzdGF0ZXMiOltdLCJzY2hlbWEiOiJpbXBvcnQgeyB6IH0gZnJvbSBcInpvZFwiXG5cbmNvbnN0IE9wdGlvbiA9IHouc3RyaWN0T2JqZWN0KHtcbiAgbGFiZWw6IHouc3RyaW5nKCksXG4gIHZhbHVlOiB6LnN0cmluZygpLFxuICBkaXNhYmxlZDogei5ib29sZWFuKCkub3B0aW9uYWwoKSxcbn0pXG5cbmNvbnN0IFF1ZXN0aW9uID0gei5zdHJpY3RPYmplY3Qoe1xuICBpZDogei5zdHJpbmcoKSxcbiAgcHJvbXB0OiB6LnN0cmluZygpLFxuICBvcHRpb25zOiB6LmFycmF5KE9wdGlvbiksXG4gIGNvcnJlY3RWYWx1ZTogei5zdHJpbmcoKSxcbiAgaGludDogei5zdHJpbmcoKSxcbiAgdXNlckFuc3dlcjogei5zdHJpbmcoKS5vcHRpb25hbCgpLFxuICBpc0NvcnJlY3Q6IHouYm9vbGVhbigpLm9wdGlvbmFsKCksXG59KVxuXG5jb25zdCBXaWRnZXRTdGF0ZSA9IHouc3RyaWN0T2JqZWN0KHtcbiAgdGl0bGU6IHouc3RyaW5nKCksXG4gIHN1Ym1pdHRlZDogei5ib29sZWFuKCksXG4gIHNjb3JlOiB6LnN0cmluZygpLm9wdGlvbmFsKCksXG4gIHF1ZXN0aW9uczogei5hcnJheShRdWVzdGlvbiksXG59KVxuXG5leHBvcnQgZGVmYXVsdCBXaWRnZXRTdGF0ZSIsImpzb25TY2hlbWEiOnt9LCJzY2hlbWFNb2RlIjoiem9kIiwic2NoZW1hVmFsaWRpdHkiOiJ2YWxpZCIsInZpZXdWYWxpZGl0eSI6InZhbGlkIiwiZGVmYXVsdFN0YXRlVmFsaWRpdHkiOiJ2YWxpZCJ9"
+}
