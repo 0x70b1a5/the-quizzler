@@ -76,7 +76,7 @@ async def initiate_upload(request: Request):
     # Return the URL where the file should be uploaded
     return {
         "upload_id": upload_id,
-        "upload_url": f"http://127.0.0.1:8000/chatkit/uploads/{upload_id}",
+        "upload_url": f"http://127.0.0.1:8087/chatkit/uploads/{upload_id}",
         "filename": filename,
         "content_type": content_type,
     }

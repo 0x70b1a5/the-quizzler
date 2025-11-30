@@ -20,6 +20,6 @@ echo "Installing dependencies..."
 uv sync
 
 # Run the server
-echo "Starting Quiz Taker backend on http://127.0.0.1:8000"
-uv run uvicorn app.main:app --reload --port 8000
+echo "Starting Quiz Taker backend on http://127.0.0.1:8087"
+uv run uvicorn app.main:app --reload --port 8087
 

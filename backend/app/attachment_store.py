@@ -56,7 +56,7 @@ class QuizAttachmentStore(AttachmentStore[dict[str, Any]]):
         
         # Return FileAttachment with upload_url for two-phase upload
         # The client will PUT the file data to this URL
-        upload_url = f"http://127.0.0.1:8000/chatkit/uploads/{attachment_id}"
+        upload_url = f"http://127.0.0.1:8087/chatkit/uploads/{attachment_id}"
         
         attachment = FileAttachment(
             id=attachment_id,
