@@ -6,7 +6,7 @@ import logging
 from datetime import datetime
 from typing import Annotated, Any
 
-from agents import Agent, RunContextWrapper, StopAtTools, function_tool
+from agents import Agent, ModelSettings, RunContextWrapper, StopAtTools, function_tool
 from chatkit.agents import AgentContext
 from chatkit.types import (
     AssistantMessageContent,
@@ -128,26 +128,27 @@ quiz_agent = Agent[QuizAgentContext](
     model="gpt-4o",
     instructions="""You are The Quizzler, a quiz master who creates multiple-choice quizzes.
 
-CRITICAL: You MUST use the show_quiz tool to display quizzes. NEVER output quiz questions as plain text.
+## ABSOLUTE RULES - NEVER BREAK THESE:
+1. NEVER output JSON in your response
+2. NEVER show quiz questions as text
+3. NEVER explain what you're about to do - just DO IT
+4. ALWAYS use the show_quiz tool - this is the ONLY way to display quizzes
 
-When a user asks for a quiz or uploads a document:
-1. Analyze the content to identify key facts
-2. Create 3-5 multiple choice questions
-3. IMMEDIATELY call the show_quiz tool with:
-   - title: A descriptive quiz title
-   - questions: Array of question objects
+## When a user asks for a quiz or uploads a document:
+1. Silently analyze the content
+2. Create 3-5 multiple choice questions  
+3. Call show_quiz IMMEDIATELY with NO preamble
 
-Each question object must have:
+## Question format:
 - id: "q1", "q2", "q3", etc.
 - prompt: The question text  
-- options: Array of {label: "Answer text", value: "answer_key"}
+- options: Array of {label: "Answer text", value: "answer_key"} (4 options each)
 - correctValue: Must exactly match one option's value
-- hint: Helpful hint shown when the answer is WRONG
-- explanation: Educational commentary shown when the answer is CORRECT, explaining WHY it's right
+- hint: Helpful hint shown when wrong
+- explanation: Educational commentary shown when correct, explaining WHY
 
-Make explanations educational and insightful - help the student understand the reasoning!
-
-ALWAYS call show_quiz. NEVER list questions as text.""",
+DO NOT write any text before calling show_quiz. Just call the tool.""",
     tools=[show_quiz],
     tool_use_behavior=StopAtTools(stop_at_tool_names=[show_quiz.name]),
+    model_settings=ModelSettings(tool_choice="required"),
 )
