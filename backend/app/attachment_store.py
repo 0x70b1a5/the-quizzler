@@ -11,7 +11,7 @@ from typing import TYPE_CHECKING, Any
 from chatkit.store import AttachmentStore
 from chatkit.types import FileAttachment
 
-from .config import get_backend_url
+from .config import get_public_url
 from .file_store import file_store
 
 if TYPE_CHECKING:
@@ -57,8 +57,8 @@ class QuizAttachmentStore(AttachmentStore[dict[str, Any]]):
         
         # Return FileAttachment with upload_url for two-phase upload
         # The client will PUT the file data to this URL
-        backend_url = get_backend_url()
-        upload_url = f"{backend_url}/chatkit/uploads/{attachment_id}"
+        public_url = get_public_url()
+        upload_url = f"{public_url}/chatkit/uploads/{attachment_id}"
         
         attachment = FileAttachment(
             id=attachment_id,

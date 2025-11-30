@@ -11,7 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
 from starlette.responses import JSONResponse
 
-from .config import get_backend_url, get_cors_origins
+from .config import get_public_url, get_cors_origins
 from .file_store import file_store, StoredFile
 from .server import QuizServer, create_quiz_server
 
@@ -75,10 +75,10 @@ async def initiate_upload(request: Request):
     upload_id = str(uuid.uuid4())
     
     # Return the URL where the file should be uploaded
-    backend_url = get_backend_url()
+    public_url = get_public_url()
     return {
         "upload_id": upload_id,
-        "upload_url": f"{backend_url}/chatkit/uploads/{upload_id}",
+        "upload_url": f"{public_url}/chatkit/uploads/{upload_id}",
         "filename": filename,
         "content_type": content_type,
     }
