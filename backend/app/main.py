@@ -11,6 +11,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import Response, StreamingResponse
 from starlette.responses import JSONResponse
 
+from .config import get_backend_url, get_cors_origins
 from .file_store import file_store, StoredFile
 from .server import QuizServer, create_quiz_server
 
@@ -18,10 +19,10 @@ logger = logging.getLogger(__name__)
 
 app = FastAPI(title="Quiz Taker API")
 
-# CORS for local development
+# CORS - origins configured via environment variables
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5180", "http://127.0.0.1:5180","https://quiz.theologi.ca"],
+    allow_origins=get_cors_origins(),
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -74,9 +75,10 @@ async def initiate_upload(request: Request):
     upload_id = str(uuid.uuid4())
     
     # Return the URL where the file should be uploaded
+    backend_url = get_backend_url()
     return {
         "upload_id": upload_id,
-        "upload_url": f"http://127.0.0.1:8087/chatkit/uploads/{upload_id}",
+        "upload_url": f"{backend_url}/chatkit/uploads/{upload_id}",
         "filename": filename,
         "content_type": content_type,
     }

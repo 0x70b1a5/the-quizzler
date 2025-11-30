@@ -3,6 +3,14 @@
 
 cd "$(dirname "$0")"
 
+# Load .env file if it exists
+if [ -f .env ]; then
+    echo "Loading environment from .env file..."
+    set -a
+    source .env
+    set +a
+fi
+
 # Check if uv is installed
 if ! command -v uv &> /dev/null; then
     echo "uv is not installed. Please install it: https://docs.astral.sh/uv/getting-started/installation/"
@@ -15,11 +23,14 @@ if [ -z "$OPENAI_API_KEY" ]; then
     exit 1
 fi
 
+# Get port from environment or default
+BACKEND_PORT="${BACKEND_PORT:-8000}"
+BACKEND_HOST="${BACKEND_HOST:-127.0.0.1}"
+
 # Sync dependencies
 echo "Installing dependencies..."
 uv sync
 
 # Run the server
-echo "Starting Quiz Taker backend on http://127.0.0.1:8087"
-uv run uvicorn app.main:app --reload --port 8087
-
+echo "Starting Quiz Taker backend on http://${BACKEND_HOST}:${BACKEND_PORT}"
+uv run uvicorn app.main:app --reload --host "${BACKEND_HOST}" --port "${BACKEND_PORT}"
